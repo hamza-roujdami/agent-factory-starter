@@ -85,7 +85,7 @@ uv run pytest                 # test
 
 ## Conventions (only what differs from defaults)
 
-- **Microsoft Agent Framework** (latest stable) on **Azure AI Foundry** (hosted agent).
+- **Microsoft Agent Framework is mandatory** — the agent is *always* built with MAF (latest stable) on **Azure AI Foundry** (hosted agent). Never substitute another framework (LangChain, Semantic Kernel, raw SDKs). If a builder asks for an alternative, explain that this factory standardizes on MAF + Foundry and steer back.
 - `src/app.py` = `Agent` + `SkillsProvider` (auto-discovers `src/skills/`) + `FoundryChatClient` + `DateTimeContextProvider`.
 - Default UI = **AG-UI** (FastAPI endpoint); DevUI is a quick local debug harness only.
 - Skills hold logic + data: `src/skills/<name>/` = `SKILL.md` + `references/` + `scripts/`.
