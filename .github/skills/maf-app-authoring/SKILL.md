@@ -89,8 +89,14 @@ if __name__ == "__main__":
 
 - **Auth**: `DefaultAzureCredential` everywhere. Samples use `AzureCliCredential` for pure-local; prefer
   `DefaultAzureCredential` so the same code works with managed identity in Azure. Never hardcode keys.
-- **Env**: `FOUNDRY_PROJECT_ENDPOINT` (`https://<account>.services.ai.azure.com/api/projects/<project>`)
-  and `AZURE_AI_MODEL_DEPLOYMENT_NAME`. Keep them in `src/.env` (gitignored); document in `.env.example`.
+- **Env (local vs hosted — important)**: the two settings are `FOUNDRY_PROJECT_ENDPOINT`
+  (`https://<account>.services.ai.azure.com/api/projects/<project>`) and `AZURE_AI_MODEL_DEPLOYMENT_NAME`.
+  - **Local**: keep them in `src/.env` (gitignored, `load_dotenv()`); document every var in `.env.example`.
+  - **Hosted**: `.env` **never ships in the image**. Foundry **auto-injects** `FOUNDRY_PROJECT_ENDPOINT` +
+    `APPLICATIONINSIGHTS_CONNECTION_STRING` (don't declare them); your own vars (e.g.
+    `AZURE_AI_MODEL_DEPLOYMENT_NAME`) go in `agent.yaml` `environment_variables`; secrets come from a
+    Foundry **connection** (`${{connections...}}`, Key Vault) — see `foundry-deploy`. So a var is mirrored:
+    `.env` for local ↔ `agent.yaml` for hosted.
 - **Skills auto-discovery**: `SkillsProvider.from_paths(skill_paths="src/skills")` scans for `SKILL.md`
   files. If skills ship runnable scripts, pass a `script_runner` (see `skill-authoring`). Skills are
   **experimental** — MAF emits a `[SKILLS]` `FutureWarning`; filter it if noisy.
