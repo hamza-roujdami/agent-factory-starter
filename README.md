@@ -1,0 +1,98 @@
+# agent-factory-starter
+
+> A reusable starter kit — a **guided cockpit** that takes *anyone* (dev or non-dev) from
+> **0 → a deployed, testable agentic AI app**, built with **Microsoft Agent Framework** (latest stable),
+> **Microsoft Foundry** (hosted agent), **GitHub + GitHub Actions**, and **Microsoft Azure**.
+
+This template is the **factory**. Each real project (e.g. `my-support-agent`) is an **instance** created from it.
+You don't hand-write the app — you open the project in VS Code, talk to Copilot, and it guides you the
+whole way: discover → design → build → push → CI/CD → deploy → test. Like Claude Code, for MAF+Foundry.
+
+## The one-command vision
+
+```bash
+newagent my-agent    # scaffold the cockpit, git init, open in VS Code
+```
+
+Then just talk to Copilot — no Azure or coding expertise needed:
+
+1. **Discover**  — “I want to build …” → Copilot interviews you, writes `references/context.md`
+2. **Design**    — turns it into an architecture diagram
+3. **Build**     — generates the MAF app in `src/` + skills
+4. **Ship**      — push to GitHub → Actions deploys to Foundry → a URL you can test
+
+## Two layers (this is the core idea)
+
+| Layer | Path | What it is |
+|-------|------|------------|
+| **Cockpit (Agent A)** | repo root | How you *build*: `AGENTS.md`, `.github/` instructions + skills, `references/` context store |
+| **App (Agent B)** | `src/` + `infra/` | What *ships*: the MAF app + its Azure infra — **generated on-demand** by the cockpit skills |
+
+> The cockpit configures your coding assistant (Copilot/Claude) and **is the product**. The app is the
+> deliverable it helps you build and run on Foundry.
+
+## Planned structure
+
+```
+agent-factory-starter/
+  AGENTS.md                       # always-on context + the “start here” journey (TEMPLATE w/ placeholders)
+  .github/
+    copilot-instructions.md       # points the agent at AGENTS.md
+    instructions/                 # auto-applied coding rules (python)
+    skills/                       # cockpit skills: discover → design → build → ship
+  references/                     # context store (gitignored in real projects)
+    README.md
+    docs/                         # drop meeting notes / PDFs here
+  src/                            # MAF app (Agent B) — GENERATED on-demand by the skills
+    app.py · skills/ · docs/      #   (+ Dockerfile, azure.yaml, agent.yaml for deploy)
+  scripts/
+    newagent.sh                   # the one-command bootstrap
+  .gitignore
+```
+
+> Azure infrastructure is **not** in this repo — the **platform team** provisions the Azure AI Landing
+> Zone (Foundry, Cosmos, AI Search, identity). The app just deploys into it with `azd deploy`.
+
+## Cockpit skills (`.github/skills/`)
+
+The coding agent is driven by skills that auto-load by their `description`. Together they walk **anyone**
+(dev or non-dev) the full journey — **idea → discover → design → build → push → CI/CD → deploy → a live app to test**:
+
+| Phase | Skill | Produces |
+|-------|-------|----------|
+| Discover | `discovery` | `references/context.md` + filled `AGENTS.md` (conversational intake) |
+| Check | `environment-readiness` | confirms GitHub · Foundry · Azure are ready (platform team provides them) |
+| Design | `solution-architecture` | Mermaid diagrams in `src/docs/` |
+| Build | `maf-app-authoring` | `src/app.py` (Agent + SkillsProvider + FoundryChatClient) |
+| Build | `skill-authoring` | `src/skills/<name>/` capabilities |
+| Integrate | `azure-integration` | Foundry · Cosmos · AI Search wiring |
+| Verify | `infra-landing-zone` | confirms + pulls connection details from the platform-provided landing zone |
+| Ship (auto) | `github-cicd` | GitHub repo + Actions workflow (OIDC) → push deploys → a testable URL |
+| Ship (local) | `foundry-deploy` | Dockerfile + `agent.yaml` → Foundry hosted agent |
+| Surface | `channels` | publish to Teams · M365 Copilot · web · voice |
+| Operate | `evaluation-observability` | eval quality (local → Foundry) + OpenTelemetry tracing |
+| Govern | `governance` | responsible-AI guardrails + go-live sign-off |
+
+> The cockpit **is** the product. `src/` is generated **on-demand** through these skills — this kit
+> doesn't ship a hand-written app. **The platform team provisions** the environment (GitHub · Foundry ·
+> Azure AI Landing Zone); the **builder consumes** it — the cockpit never provisions infrastructure.
+
+## Stack (fixed)
+
+- **Microsoft Agent Framework** — latest stable (`agent-framework-core`, `agent-framework-foundry`)
+- **Microsoft Foundry** — hosted agent (Account + Project model), provisioned by the platform team
+- **GitHub + GitHub Actions** — source + CI/CD (push to deploy, OIDC auth)
+- **Azure** — AI Landing Zone provisioned by the platform team; app uses `DefaultAzureCredential` + `azd deploy`
+- **Python 3.13**, Ruff, async by default; DevUI as the local dev harness
+
+## Reference pattern
+
+- Mirror the **Microsoft Agent Framework** samples for the MAF v1 hosted-agent pattern
+  (the `agent-framework` repo: `python/samples`, `python/packages/foundry`).
+- `src/app.py` shape: `Agent` + `SkillsProvider` (auto-discovers `skills/`) + `FoundryChatClient`
+  + a `DateTimeContextProvider`, served via `devui` and an AG-UI FastAPI endpoint.
+
+## Status
+
+� Cockpit complete — 9 skills (discover → ship), `python` coding rules, `copilot-instructions.md`, and the
+`newagent` bootstrap. Open a new project with `scripts/newagent.sh <name>`, then talk to Copilot.
