@@ -33,7 +33,8 @@ Walk them through, one step at a time — each phase has a skill that auto-loads
    GitHub · Foundry · Azure; the builder just confirms (deeper Azure check: `infra-landing-zone`)
 3. **Design** the architecture → `solution-architecture` → diagrams in `src/docs/`
 4. **Build** the agent → `maf-app-authoring` + `skill-authoring` (+ `azure-integration` for KB/state)
-5. **Ship & test** → `github-cicd` (push → GitHub Actions → deploy) or `foundry-deploy` (local) → a live URL;
+5. **Ship & test** → ask: run **local** (AG-UI on their machine) or **hosted in Azure**? → `github-cicd`
+   (push → GitHub Actions → deploy) or `foundry-deploy` (local/manual) → a live URL;
    surface it to users with `channels` (Teams · M365 · web · voice)
 6. **Evaluate & operate** → `evaluation-observability` (quality + tracing) · `governance` (safe go-live)
 
@@ -74,9 +75,10 @@ This repo separates the **coding cockpit** (how we build) from the **app** (what
 ## Build & run (validated commands — trust these before searching)
 
 ```bash
+uv venv                       # create the .venv virtual environment (gitignored)
 uv sync                       # install dependencies (Python 3.13)
 cp src/.env.example src/.env  # configure: set Foundry endpoint + model
-python src/app.py             # run locally (devui chat UI)
+python src/app.py             # run locally (AG-UI chat UI)
 uv run ruff check src         # lint
 uv run pytest                 # test
 ```

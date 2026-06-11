@@ -102,6 +102,29 @@ if __name__ == "__main__":
   **experimental** — MAF emits a `[SKILLS]` `FutureWarning`; filter it if noisy.
 - **Context providers** compose in a list and run in order. `before_run` adds instructions/messages/tools;
   `after_run` processes the response. History providers (file/Cosmos) are context providers too.
+## Choose the run mode (ask the builder)
+
+Early in the build, **ask how they want to run the AG-UI agent** — it's the same code either way, only
+where it runs differs:
+
+- **Local** — run on their machine (`uv venv` → `uv sync` → `uv run uvicorn app:app --reload`), chat via
+  the AG-UI frontend. Fast inner loop; needs a Foundry endpoint + model in `src/.env`. Start here.
+- **Hosted in Azure** — deploy as a Foundry **hosted agent** for a shareable URL (and Teams/M365 later).
+  Same AG-UI app, packaged + deployed via `foundry-deploy` / `github-cicd`.
+
+Local first to iterate, then hosted to share — they're not exclusive.
+
+## Setup & run (local)
+
+```bash
+uv venv                       # create .venv (gitignored)
+uv sync                       # install deps (Python 3.13)
+cp .env.example .env          # set FOUNDRY_PROJECT_ENDPOINT + model
+uv run uvicorn app:app --reload   # AG-UI endpoint
+```
+
+## Notes
+
 - **Running**: the **default UI is AG-UI** — a FastAPI app exposing
   `add_agent_framework_fastapi_endpoint(app, agent, "/")` (run `uvicorn app:app --reload`), which the AG-UI
   web frontend connects to. AG-UI can host an agent **or** a workflow. For a quick poke without a frontend,

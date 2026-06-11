@@ -25,8 +25,11 @@ the global AI-agent defaults and **override** them where this template differs.
 
 ## Running
 
+- **Virtual env**: always work inside a venv — `uv venv` then `uv sync` (the `.venv/` is gitignored). Never commit it.
 - **Default UI = AG-UI**: a FastAPI app with `add_agent_framework_fastapi_endpoint(app, agent, "/")`, run via
   `uvicorn app:app --reload`. DevUI (`serve()` from `agent_framework.devui`) is a quick **debug** harness only.
+- **Run mode** is the builder's choice: **local** (uvicorn on their machine) or **hosted in Azure** (Foundry
+  hosted agent) — same app, see `foundry-deploy`.
 - Hosted = a Foundry **protocol library** (`azure-ai-agentserver-responses`, port 8088). Don't hand-roll a bespoke server.
 - If you containerize on Apple Silicon, build `linux/amd64` (`docker build --platform linux/amd64 .`).
 
