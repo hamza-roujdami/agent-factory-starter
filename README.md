@@ -26,7 +26,7 @@ Then just talk to Copilot — no Azure or coding expertise needed:
 | Layer | Path | What it is |
 |-------|------|------------|
 | **Cockpit (Agent A)** | repo root | How you *build*: `AGENTS.md`, `.github/` instructions + skills, `references/` context store |
-| **App (Agent B)** | `src/` + `infra/` | What *ships*: the MAF app + its Azure infra — **generated on-demand** by the cockpit skills |
+| **App (Agent B)** | `src/` | What *ships*: the MAF app — **generated on-demand** by the cockpit skills. Azure infra is **platform-provided** (not in this repo) |
 
 > The cockpit configures your coding assistant (Copilot/Claude) and **is the product**. The app is the
 > deliverable it helps you build and run on Foundry.
@@ -93,5 +93,5 @@ The coding agent is driven by skills that auto-load by their `description`. Toge
 
 ## Status
 
-� Cockpit complete — 9 skills (discover → ship), `python` coding rules, `copilot-instructions.md`, and the
+🟢 Cockpit complete — 11 skills (discover → ship), `python` coding rules, `copilot-instructions.md`, and the
 `newagent` bootstrap. Open a new project with `scripts/newagent.sh <name>`, then talk to Copilot.
