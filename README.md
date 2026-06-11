@@ -21,6 +21,28 @@ Then just talk to Copilot — no Azure or coding expertise needed:
 3. **Build**     — generates the MAF app in `src/` + skills
 4. **Ship**      — deploy to Foundry from the command line → a URL you can test
 
+## The journey (discover → operate)
+
+Each phase is driven by a cockpit skill that auto-loads when it's relevant — you just keep talking to Copilot.
+
+```mermaid
+flowchart LR
+    idea([Idea]) --> D[1 · Discover<br/>discovery]
+    D --> C{2 · Check env<br/>environment-readiness}
+    C --> DES[3 · Design<br/>solution-architecture]
+    DES --> B[4 · Build<br/>maf-app-authoring<br/>skill-authoring · azure-integration]
+    B --> S[5 · Ship and test<br/>foundry-deploy]
+    S --> live([Live agent URL])
+    live --> O[6 · Evaluate and operate<br/>evaluation-observability · governance]
+    S -. surface .-> CH[channels<br/>Teams · M365 · web · voice]
+
+    classDef gate fill:#e8eef9,stroke:#5b7fc7,color:#111;
+    class C gate;
+```
+
+> The **Check env** gate (shaded) is where the builder confirms the **platform team** has GitHub · Foundry ·
+> the Azure AI Landing Zone ready — the cockpit never provisions infrastructure.
+
 ## Two layers (this is the core idea)
 
 | Layer | Path | What it is |
@@ -30,6 +52,29 @@ Then just talk to Copilot — no Azure or coding expertise needed:
 
 > The cockpit configures your coding assistant (Copilot/Claude) and **is the product**. The app is the
 > deliverable it helps you build and run on Foundry.
+
+**Who provides what** — the platform team provisions once; the builder consumes and ships:
+
+```mermaid
+flowchart TB
+    subgraph PLATFORM["Platform team — provisions once"]
+        gh[GitHub repo]
+        foundry[Foundry project + model]
+        lz[Azure AI Landing Zone<br/>Cosmos · AI Search · App Insights · Managed Identity]
+    end
+    subgraph BUILDER["Builder — consumes, this repo"]
+        cockpit[Cockpit<br/>AGENTS.md + skills]
+        app[src/app.py + skills]
+    end
+    cockpit --> app
+    app -- azd deploy --> hosted([Foundry hosted agent])
+    gh -. source control .-> cockpit
+    foundry -. endpoint + model .-> app
+    lz -. connection details .-> app
+
+    classDef plat fill:#e8eef9,stroke:#5b7fc7,color:#111;
+    class gh,foundry,lz plat;
+```
 
 ## Planned structure
 
