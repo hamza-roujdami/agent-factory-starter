@@ -1,6 +1,6 @@
 ---
 name: infra-landing-zone
-description: "Verify and consume the Azure AI Landing Zone the platform team provisioned, and pull the connection details the app needs. USE FOR: 'is the landing zone ready', 'verify Azure resources', 'what did the platform team set up', 'get my endpoints', 'check RBAC', confirming Foundry project + Cosmos + AI Search + App Insights + managed identity exist. DO NOT USE FOR: writing Bicep or running azd provision (the platform team owns provisioning), deploying the agent (use github-cicd / foundry-deploy), wiring services in code (use azure-integration)."
+description: "Verify and consume the Azure AI Landing Zone the platform team provisioned, and pull the connection details the app needs. USE FOR: 'is the landing zone ready', 'verify Azure resources', 'what did the platform team set up', 'get my endpoints', 'check RBAC', confirming Foundry project + Cosmos + AI Search + App Insights + managed identity exist. DO NOT USE FOR: writing Bicep or running azd provision (the platform team owns provisioning), deploying the agent (use foundry-deploy), wiring services in code (use azure-integration)."
 ---
 
 # Azure AI Landing Zone — verify & consume (don't provision)
@@ -57,4 +57,4 @@ APPLICATIONINSIGHTS_CONNECTION_STRING=<from the project>
 
 Stop and **ask the platform team** — don't try to create it. Record the gap as a `❓ OPEN`/risk in
 `references/context.md` (§18, §22). Then hand off to `azure-integration` (wire the code) and
-`github-cicd` / `foundry-deploy` (deploy against the ready environment).
+`foundry-deploy` (deploy against the ready environment).

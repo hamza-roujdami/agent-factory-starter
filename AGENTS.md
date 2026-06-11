@@ -33,8 +33,8 @@ Walk them through, one step at a time — each phase has a skill that auto-loads
    GitHub · Foundry · Azure; the builder just confirms (deeper Azure check: `infra-landing-zone`)
 3. **Design** the architecture → `solution-architecture` → diagrams in `src/docs/`
 4. **Build** the agent → `maf-app-authoring` + `skill-authoring` (+ `azure-integration` for KB/state)
-5. **Ship & test** → ask: run **local** (AG-UI on their machine) or **hosted in Azure**? → `github-cicd`
-   (push → GitHub Actions → deploy) or `foundry-deploy` (local/manual) → a live URL;
+5. **Ship & test** → ask: run **local** (AG-UI on their machine) or **hosted in Azure**? →
+   `foundry-deploy` (manual `azd deploy` from the command line) → a live URL;
    surface it to users with `channels` (Teams · M365 · web · voice)
 6. **Evaluate & operate** → `evaluation-observability` (quality + tracing) · `governance` (safe go-live)
 

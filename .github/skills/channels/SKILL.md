@@ -1,6 +1,6 @@
 ---
 name: channels
-description: "Publish the agent to where users are: Teams + Microsoft 365 Copilot, custom web/API, or voice. USE FOR: 'publish to Teams', 'Microsoft 365', 'M365 Copilot', 'add a channel', 'voice agent', 'talk to it', 'phone/voice', 'where can users reach the agent', 'surface the agent'. DO NOT USE FOR: building the agent (use maf-app-authoring), deploying the hosted agent (use foundry-deploy), CI/CD (use github-cicd)."
+description: "Publish the agent to where users are: Teams + Microsoft 365 Copilot, custom web/API, or voice. USE FOR: 'publish to Teams', 'Microsoft 365', 'M365 Copilot', 'add a channel', 'voice agent', 'talk to it', 'phone/voice', 'where can users reach the agent', 'surface the agent'. DO NOT USE FOR: building the agent (use maf-app-authoring), deploying the hosted agent (use foundry-deploy)."
 ---
 
 # Channels — surface the agent where users are
@@ -48,4 +48,4 @@ pairing **Azure Voice Live** (or Pipecat / LiveKit) inside the container.
 | Real-time voice | Invocations (WebSocket) + Voice Live *(preview, NCUS)* |
 
 Start with the channel in the spec; a hosted agent can expose several protocols at once. Confirm the agent
-is built on Responses first (see `maf-app-authoring`), then publish via `foundry-deploy` / `github-cicd`.
+is built on Responses first (see `maf-app-authoring`), then publish via `foundry-deploy`.

@@ -1,6 +1,6 @@
 ---
 name: environment-readiness
-description: "Checkpoint AFTER discovery: confirm the builder's environment is provisioned and ready before building. USE FOR: 'is my environment ready', 'prerequisites', 'do I have what I need', 'before I build', 'check my setup', GitHub + GitHub Actions + Foundry + Azure readiness, confirming the platform team has things ready. DO NOT USE FOR: discovering requirements (use discovery), wiring services in code (use azure-integration), deploying (use github-cicd / foundry-deploy)."
+description: "Checkpoint AFTER discovery: confirm the builder's environment is provisioned and ready before building. USE FOR: 'is my environment ready', 'prerequisites', 'do I have what I need', 'before I build', 'check my setup', GitHub + Foundry + Azure readiness, confirming the platform team has things ready. DO NOT USE FOR: discovering requirements (use discovery), wiring services in code (use azure-integration), deploying (use foundry-deploy)."
 ---
 
 # Environment Readiness — the gate between discovery and build
@@ -19,11 +19,10 @@ commands for them, and translate the results into a simple "ready ✅ / not yet 
 
 Three areas. For each, confirm access and capture the concrete values the app will need.
 
-### 1. GitHub + GitHub Actions
+### 1. GitHub (source control)
 - [ ] A GitHub repository exists (or they can create one) and the builder has push access.
-- [ ] GitHub **Actions is enabled** for the repo/org.
-- [ ] OIDC deploy identity to Azure is set up — usually a **platform-team** task (federated credential).
 - Verify: `gh auth status` · `gh repo view` (if a repo exists).
+- Note: deployment is **manual** (`azd deploy` from the command line) — no GitHub Actions / CI/CD needed.
 
 ### 2. Microsoft Foundry
 - [ ] A **Foundry project** exists and the builder has at least **Foundry User** access (runtime model/tool
@@ -49,7 +48,7 @@ Three areas. For each, confirm access and capture the concrete values the app wi
   §22 Azure footprint) and proceed to `solution-architecture` → build.
 - **Something missing ❌** → **stop and tell the builder to sync with the platform team.** Give them a
   crisp "please provision / share these" list:
-  - GitHub repo + Actions enabled + OIDC deploy identity to Azure
+  - GitHub repo (source control) + push access
   - Foundry project endpoint + deployed model name + my access role
   - Azure subscription + AI Landing Zone ready + app identity & RBAC + region
 - Mark unresolved items as `❓ OPEN` in the spec so they stay visible.

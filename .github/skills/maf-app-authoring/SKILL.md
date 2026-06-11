@@ -110,7 +110,7 @@ where it runs differs:
 - **Local** — run on their machine (`uv venv` → `uv sync` → `uv run uvicorn app:app --reload`), chat via
   the AG-UI frontend. Fast inner loop; needs a Foundry endpoint + model in `src/.env`. Start here.
 - **Hosted in Azure** — deploy as a Foundry **hosted agent** for a shareable URL (and Teams/M365 later).
-  Same AG-UI app, packaged + deployed via `foundry-deploy` / `github-cicd`.
+  Same AG-UI app, packaged + deployed via `foundry-deploy` (manual `azd deploy`).
 
 Local first to iterate, then hosted to share — they're not exclusive.
 

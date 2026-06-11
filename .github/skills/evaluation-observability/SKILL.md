@@ -1,6 +1,6 @@
 ---
 name: evaluation-observability
-description: "Measure and watch the agent: evaluate quality and set up tracing/monitoring. USE FOR: 'evaluate the agent', 'eval', 'is it any good', 'test quality', 'add tracing', 'observability', 'monitor the agent', 'App Insights', 'OpenTelemetry', 'eval dashboard', 'optimize the prompt/instructions', 'agent optimizer'. DO NOT USE FOR: deploying (use foundry-deploy / github-cicd), wiring KB/state (use azure-integration), governance/security policy (use governance)."
+description: "Measure and watch the agent: evaluate quality and set up tracing/monitoring. USE FOR: 'evaluate the agent', 'eval', 'is it any good', 'test quality', 'add tracing', 'observability', 'monitor the agent', 'App Insights', 'OpenTelemetry', 'eval dashboard', 'optimize the prompt/instructions', 'agent optimizer'. DO NOT USE FOR: deploying (use foundry-deploy), wiring KB/state (use azure-integration), governance/security policy (use governance)."
 ---
 
 # Evaluation & Observability — prove it works, then watch it
@@ -31,7 +31,7 @@ results = await evaluate_agent(agent=agent, queries=[...], evaluators=evals)
 
 - Keep a small **eval dataset** of representative queries (+ expected behavior) under the project; grow it
   from real traces over time.
-- Run evals in **CI** (the `github-cicd` pipeline) as a quality gate before deploy.
+- Run evals before each deploy as a quality gate (locally, or wherever you run checks).
 - Foundry surfaces eval runs as **dashboards**; see the official "Agent evaluators" guidance.
 
 ## Observe (OpenTelemetry → App Insights)

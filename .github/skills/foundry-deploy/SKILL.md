@@ -1,6 +1,6 @@
 ---
 name: foundry-deploy
-description: "Package and deploy the agent as a Foundry hosted agent against an already-provisioned environment. USE FOR: 'deploy the agent', 'deploy to Foundry', 'hosted agent', 'ship the agent', 'go live', building the Dockerfile + agent.yaml, running azd ai agent init/deploy, the Responses vs Invocations API. DO NOT USE FOR: verifying the landing zone (use infra-landing-zone), automated CI/CD (use github-cicd), local dev with DevUI (use maf-app-authoring)."
+description: "Package and deploy the agent as a Foundry hosted agent against an already-provisioned environment. USE FOR: 'deploy the agent', 'deploy to Foundry', 'hosted agent', 'ship the agent', 'go live', building the Dockerfile + agent.yaml, running azd ai agent init/deploy, the Responses vs Invocations API. DO NOT USE FOR: verifying the landing zone (use infra-landing-zone), local dev with DevUI (use maf-app-authoring)."
 ---
 
 # Foundry Deploy — ship the hosted agent

@@ -137,7 +137,7 @@ Standards, guardrails, content safety, data boundaries.
 ### 26. Observability & Evaluation
 Tracing, logging, eval datasets, monitoring, success thresholds.
 ### 27. Delivery Plan & Milestones
-Prototype → MVP → prod, environments, CI/CD.
+Prototype → MVP → prod, environments, delivery.
 ### 28. Open Questions & Risks
 Unknowns, pending decisions, risks + mitigations.
 ```
