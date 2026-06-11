@@ -83,14 +83,14 @@ The coding agent is driven by skills that auto-load by their `description`. Toge
 - **Microsoft Foundry** — hosted agent (Account + Project model), provisioned by the platform team
 - **GitHub + GitHub Actions** — source + CI/CD (push to deploy, OIDC auth)
 - **Azure** — AI Landing Zone provisioned by the platform team; app uses `DefaultAzureCredential` + `azd deploy`
-- **Python 3.13**, Ruff, async by default; DevUI as the local dev harness
+- **Python 3.13**, Ruff, async by default; **AG-UI** as the default UI, DevUI as the local debug harness
 
 ## Reference pattern
 
 - Mirror the **Microsoft Agent Framework** samples for the MAF v1 hosted-agent pattern
   (the `agent-framework` repo: `python/samples`, `python/packages/foundry`).
 - `src/app.py` shape: `Agent` + `SkillsProvider` (auto-discovers `skills/`) + `FoundryChatClient`
-  + a `DateTimeContextProvider`, served via `devui` and an AG-UI FastAPI endpoint.
+  + a `DateTimeContextProvider`, served via an **AG-UI** FastAPI endpoint (DevUI for quick local debugging).
 
 ## Status
 

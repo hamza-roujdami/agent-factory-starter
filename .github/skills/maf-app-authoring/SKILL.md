@@ -15,7 +15,10 @@ How to build the shipped agent (Agent B) with **Microsoft Agent Framework** (cor
 dependencies = [
   "agent-framework-core",
   "agent-framework-foundry",
-  "agent-framework-devui",   # local dev harness only — NOT production
+  "agent-framework-ag-ui",   # default UI: AG-UI web protocol (FastAPI)
+  "fastapi",
+  "uvicorn",
+  "agent-framework-devui",   # quick local debug harness only — NOT production
   "azure-identity",
   "python-dotenv",
 ]
@@ -70,9 +73,16 @@ def build_agent() -> Agent:
 
 
 if __name__ == "__main__":
-    from agent_framework.devui import serve
+    # Default UI: AG-UI web protocol served over FastAPI.
+    from fastapi import FastAPI
+    from agent_framework.ag_ui import add_agent_framework_fastapi_endpoint
 
-    serve(entities=[build_agent()], auto_open=True)  # → http://localhost:8080
+    app = FastAPI()
+    add_agent_framework_fastapi_endpoint(app, build_agent(), "/")
+    # Run with: uvicorn app:app --reload   (AG-UI frontend talks to this endpoint)
+
+    # Quick-debug alternative (no frontend needed):
+    #   from agent_framework.devui import serve; serve(entities=[build_agent()], auto_open=True)
 ```
 
 ## Key facts (verified)
@@ -86,11 +96,12 @@ if __name__ == "__main__":
   **experimental** — MAF emits a `[SKILLS]` `FutureWarning`; filter it if noisy.
 - **Context providers** compose in a list and run in order. `before_run` adds instructions/messages/tools;
   `after_run` processes the response. History providers (file/Cosmos) are context providers too.
-- **Running**: `serve()` from `agent_framework.devui` is the **dev** harness (`http://localhost:8080`,
-  OpenAI-compatible `/v1/responses`, `--instrumentation` for traces). It is **not for production** — in
-  the hosted runtime the agent is served by a Foundry **protocol library**
-  (`azure-ai-agentserver-responses`, port 8088, auto `/readiness`); the **Responses** protocol is the
-  default. AG-UI and other non-OpenAI protocols map to **Invocations**. See `foundry-deploy`.
+- **Running**: the **default UI is AG-UI** — a FastAPI app exposing
+  `add_agent_framework_fastapi_endpoint(app, agent, "/")` (run `uvicorn app:app --reload`), which the AG-UI
+  web frontend connects to. AG-UI can host an agent **or** a workflow. For a quick poke without a frontend,
+  `serve()` from `agent_framework.devui` is a debug harness (`http://localhost:8080`, `--instrumentation`
+  for traces) — **dev only**. Neither is the production surface; deploy as a hosted agent (see `foundry-deploy`).
+  On a hosted agent, AG-UI maps to the **Invocations** protocol (see `channels`).
 - **Hosted env**: in Azure, `FOUNDRY_PROJECT_ENDPOINT` + `APPLICATIONINSIGHTS_CONNECTION_STRING` are
   injected automatically; locally you set them in `src/.env`.
 - **Streaming**: `async for chunk in agent.run(prompt, stream=True): chunk.text`.

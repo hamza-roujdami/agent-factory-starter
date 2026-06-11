@@ -23,10 +23,11 @@ the global AI-agent defaults and **override** them where this template differs.
 - Read platform-injected env (`FOUNDRY_PROJECT_ENDPOINT`, `APPLICATIONINSIGHTS_CONNECTION_STRING`); declare
   your own settings (e.g. the model deployment name) — don't redeclare `FOUNDRY_*`.
 
-## Running (overrides the `uvicorn` / FastAPI default)
+## Running
 
-- Local dev = **DevUI**: `serve(entities=[agent])` from `agent_framework.devui` — not `uvicorn server:app`.
-- Hosted = a Foundry **protocol library** (`azure-ai-agentserver-responses`, port 8088). Don't hand-roll a web server.
+- **Default UI = AG-UI**: a FastAPI app with `add_agent_framework_fastapi_endpoint(app, agent, "/")`, run via
+  `uvicorn app:app --reload`. DevUI (`serve()` from `agent_framework.devui`) is a quick **debug** harness only.
+- Hosted = a Foundry **protocol library** (`azure-ai-agentserver-responses`, port 8088). Don't hand-roll a bespoke server.
 - If you containerize on Apple Silicon, build `linux/amd64` (`docker build --platform linux/amd64 .`).
 
 ## Style (same as defaults — don't re-litigate)

@@ -31,6 +31,24 @@ channels (web/devui · Teams · API · voice)
 - **Align to the Azure AI Landing Zone** — the agent runs *inside* the platform team's landing zone
   (networking, Foundry account/project, policies). Reflect that boundary in the diagram.
 
+## Decide: single agent or multi-agent? (debate this with the builder)
+
+Don't just accept the first shape — **advise like an architect and push back**. Default to the **simplest
+thing that works**, and only add agents when the use case demands it.
+
+- **Single agent + skills** (start here): one `Agent` with `SkillsProvider` + tools. Right for most cases —
+  one coherent job, even with many skills. Simplest to build, test, and operate.
+- **Multi-agent / workflow** (justify it): reach for this only when there are **distinct roles**, **parallel
+  subtasks**, **hand-offs between specialists**, or **complex multi-step orchestration**. MAF supports:
+  - `HandoffBuilder` — specialists hand off to each other (triage → expert).
+  - `GroupChatBuilder` — agents collaborate/debate (round-robin or selector).
+  - `ConcurrentBuilder` — fan out subtasks in parallel, then aggregate.
+  - `MagenticBuilder` — a manager plans and coordinates specialists (Magentic-One pattern).
+  - **Workflows** (graph) for explicit multi-step control flow; a workflow can be exposed *as an agent*.
+
+State the trade-off plainly: more agents = more capability but more cost, latency, and failure modes. Ask
+the builder what the work really looks like, recommend the leanest fit, and record the decision in §19.
+
 ## Output — Mermaid into `src/docs/architecture.md`
 
 Generate **two** diagrams (Mermaid only — renders natively in VS Code / GitHub, easy to keep in sync):
