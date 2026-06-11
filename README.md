@@ -27,14 +27,14 @@ Each phase is driven by a cockpit skill that auto-loads when it's relevant — y
 
 ```mermaid
 flowchart LR
-    idea([Idea]) --> D[1 · Discover<br/>discovery]
-    D --> C{2 · Check env<br/>environment-readiness}
-    C --> DES[3 · Design<br/>solution-architecture]
-    DES --> B[4 · Build<br/>maf-app-authoring<br/>skill-authoring · azure-integration]
-    B --> S[5 · Ship and test<br/>foundry-deploy]
-    S --> live([Live agent URL])
-    live --> O[6 · Evaluate and operate<br/>evaluation-observability · governance]
-    S -. surface .-> CH[channels<br/>Teams · M365 · web · voice]
+    idea([Idea]) --> D[Discover]
+    D --> C{Check env}
+    C --> DES[Design]
+    DES --> B[Build]
+    B --> S[Ship]
+    S --> live([Live agent])
+    live --> O[Operate]
+    S -. surface .-> CH[Channels]
 
     classDef gate fill:#e8eef9,stroke:#5b7fc7,color:#111;
     class C gate;
@@ -57,20 +57,20 @@ flowchart LR
 
 ```mermaid
 flowchart TB
-    subgraph PLATFORM["Platform team — provisions once"]
-        gh[GitHub repo]
-        foundry[Foundry project + model]
-        lz[Azure AI Landing Zone<br/>Cosmos · AI Search · App Insights · Managed Identity]
+    subgraph PLATFORM["Platform team provides"]
+        gh[GitHub]
+        foundry[Foundry]
+        lz[Azure Landing Zone]
     end
-    subgraph BUILDER["Builder — consumes, this repo"]
-        cockpit[Cockpit<br/>AGENTS.md + skills]
-        app[src/app.py + skills]
+    subgraph BUILDER["Builder uses this repo"]
+        cockpit[Cockpit]
+        app[App in src]
     end
     cockpit --> app
-    app -- azd deploy --> hosted([Foundry hosted agent])
-    gh -. source control .-> cockpit
-    foundry -. endpoint + model .-> app
-    lz -. connection details .-> app
+    app -- azd deploy --> hosted([Hosted agent])
+    gh -.-> cockpit
+    foundry -.-> app
+    lz -.-> app
 
     classDef plat fill:#e8eef9,stroke:#5b7fc7,color:#111;
     class gh,foundry,lz plat;
