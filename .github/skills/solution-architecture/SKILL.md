@@ -1,6 +1,6 @@
 ---
 name: solution-architecture
-description: "Design the solution architecture for the agent and generate Mermaid diagrams into src/docs/. USE FOR: 'design the architecture', 'draw the architecture', 'architecture diagram', 'system design', 'agent internals diagram', turning references/context.md into a visual design aligned to the Azure AI Landing Zone. DO NOT USE FOR: discovering requirements (use discovery), writing the agent code (use maf-app-authoring), verifying the Azure landing zone (use infra-landing-zone)."
+description: "Design the solution architecture for the agent, generate Mermaid diagrams into src/docs/, and produce the required-services list that the platform step requests. USE FOR: 'design the architecture', 'draw the architecture', 'architecture diagram', 'system design', 'agent internals diagram', 'what services do I need', turning references/context.md into a visual design aligned to the agentic-AI platform. DO NOT USE FOR: discovering requirements (use discovery), confirming/requesting the platform (use environment-readiness), writing the agent code (use maf-app-authoring), verifying the Azure landing zone (use infra-landing-zone)."
 ---
 
 # Solution Architecture — design + diagram the agent
@@ -83,7 +83,22 @@ Adapt both to the actual spec (drop services not used; add ones that are). Keep 
 `references/context.md` — when scope changes, update both. Record any architecture decisions back into
 §19 of the spec.
 
+## Output — the required-services list (feeds the platform step)
+
+The design **decides which services the agent needs**. Write this list at the top of
+`src/docs/architecture.md` (and mirror into §22 of the spec) — it's exactly what `environment-readiness`
+turns into a request to the platform team.
+
+- **Always** (every MAF + Foundry agent): Foundry project + chat model · Entra identity + RBAC ·
+  Application Insights · container registry.
+- **Design-driven** (include only if the design uses it): **Cosmos** (durable history/state) ·
+  **AI Search** (RAG/KB grounding) · **Key Vault connection** (external-API secrets) · **MCP/data-source
+  tools** (per integration).
+
+Not every agent needs Cosmos or AI Search — list only what *this* design actually uses. Keep it tight.
+
 ## Hand off
 
-Once the architecture is agreed, run `environment-readiness` to confirm the platform-provided
-environment is ready, then `maf-app-authoring` to scaffold `src/app.py`.
+Once the architecture **and its service list** are agreed, run `environment-readiness` to request/confirm
+those services with the platform team (the last gate before coding), then `maf-app-authoring` to scaffold
+`src/app.py`.

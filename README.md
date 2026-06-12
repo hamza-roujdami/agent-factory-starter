@@ -28,15 +28,15 @@ Each phase is driven by a cockpit skill that auto-loads when it's relevant — y
 ```mermaid
 flowchart TD
     idea([💡 I want to build...]):::start --> D
-    D[1 · Discover<br/><i>what to build</i>]:::step --> C
-    C{2 · Check env<br/><i>platform ready?</i>}:::gate --> DES
-    DES[3 · Design<br/><i>architecture</i>]:::step --> B
-    B[4 · Build<br/><i>MAF agent + skills</i>]:::step --> S
+    D[1 · Discover<br/><i>what to build</i>]:::step --> DES
+    DES[2 · Design<br/><i>architecture + service list</i>]:::step --> C
+    C{3 · Confirm platform<br/><i>request the services</i>}:::gate --> B
+    B[4 · Build<br/><i>MAF agent + skills · test local</i>]:::step --> S
     S[5 · Ship<br/><i>azd deploy</i>]:::step --> live
     live([🚀 Live agent to test]):::done --> O
     O[6 · Operate<br/><i>evaluate + govern</i>]:::step
 
-    S -. publish .-> CH[Channels<br/><i>Teams · web · voice</i>]:::side
+    S -. publish .-> CH[Channels<br/><i>AG-UI · web app · Teams · voice</i>]:::side
 
     classDef start fill:#fef7e0,stroke:#e0a800,color:#111;
     classDef done fill:#e6f4ea,stroke:#34a853,color:#111;
@@ -45,8 +45,10 @@ flowchart TD
     classDef side fill:#fff,stroke:#bbb,color:#555,stroke-dasharray:4 3;
 ```
 
-> **Check env** (step 2) is a gate: the builder confirms the **platform team** has GitHub · Foundry · the
-> Azure AI Landing Zone ready. The cockpit consumes that environment — it never provisions infrastructure.
+> **Confirm platform** (step 3) is the last gate before coding: the **design** decides which services are
+> needed, then the builder **requests** that exact set from the **platform team**. Foundry + a chat model +
+> identity + App Insights are always needed; Cosmos / AI Search / Key Vault connections only when the design
+> calls for them. The cockpit consumes the platform — it never provisions infrastructure.
 
 ## Two layers (this is the core idea)
 
@@ -106,13 +108,13 @@ agent-factory-starter/
 ## Cockpit skills (`.github/skills/`)
 
 The coding agent is driven by skills that auto-load by their `description`. Together they walk **anyone**
-(dev or non-dev) the full journey — **idea → discover → design → build → deploy → a live app to test**:
+(dev or non-dev) the full journey — **idea → discover → design → confirm platform → build → deploy → a live app to test**:
 
 | Phase | Skill | Produces |
 |-------|-------|----------|
 | Discover | `discovery` | `references/context.md` + filled `AGENTS.md` (conversational intake) |
-| Check | `environment-readiness` | confirms GitHub · Foundry · Azure are ready (platform team provides them) |
-| Design | `solution-architecture` | Mermaid diagrams in `src/docs/` |
+| Design | `solution-architecture` | Mermaid diagrams in `src/docs/` **+ the required-services list** |
+| Confirm platform | `environment-readiness` | requests the agentic-AI platform with the services the design needs (platform team provides them) |
 | Build | `maf-app-authoring` | `src/app.py` (Agent + SkillsProvider + FoundryChatClient) |
 | Build | `skill-authoring` | `src/skills/<name>/` capabilities |
 | Integrate | `azure-integration` | Foundry · Cosmos · AI Search wiring |

@@ -1,6 +1,6 @@
 ---
 name: discovery
-description: "Conversational architect intake for a NEW agent project. USE FOR: starting a project, qualifying an AI use case (business + technical), discovering requirements, 'intake', 'what should I build', probing tools/data/KB/integrations, checking data readiness, producing references/context.md and filling AGENTS.md placeholders. Also reminds the builder to confirm Azure AI Landing Zone readiness with the platform team. DO NOT USE FOR: designing the architecture diagram (use solution-architecture), writing agent code (use maf-app-authoring)."
+description: "Conversational architect intake for a NEW agent project. USE FOR: starting a project, qualifying an AI use case (business + technical), discovering requirements, 'intake', 'what should I build', probing tools/data/KB/integrations, assessing data readiness, producing references/context.md and filling AGENTS.md placeholders. Notes that the platform (services) gets confirmed after the architecture is designed. DO NOT USE FOR: designing the architecture diagram (use solution-architecture), confirming/requesting the platform (use environment-readiness), writing agent code (use maf-app-authoring)."
 ---
 
 # Discovery — qualify the use case like a solution architect
@@ -38,14 +38,18 @@ spec from it — then use the conversation to confirm and fill gaps, rather than
 - **Auth & identity**: `DefaultAzureCredential`, managed identity, OBO, RBAC.
 - **Non-functional**: latency, availability, scale, accessibility, languages, compliance.
 
-## Always: Azure AI Landing Zone readiness
+## Always: assess data & tool readiness (platform comes later)
 
-Early in discovery, **tell the builder they must sync with the platform team** to confirm the
-**Azure AI Landing Zone** is provisioned and ready before the app can be deployed — subscription,
-networking/private endpoints, policies, the Foundry account/project, and identity. Capture the status
-in §18 and §22 of the spec, and raise a `❓ OPEN` if it's unconfirmed. The builder **consumes** that
-landing zone — they don't provision it. The `environment-readiness` skill is the formal gate that
-confirms this (plus GitHub and Foundry) right after discovery.
+During discovery, focus on **what the agent needs to know and do** — probe the **data**, **tools/APIs**,
+and **knowledge sources** behind every capability, and capture their readiness in the spec (§17, §18).
+This is what later determines which services the design will call for (e.g. a knowledge base → AI Search,
+durable history → Cosmos).
+
+You do **not** confirm the platform here. The builder **consumes** a platform-team-provided environment,
+and the exact services are only known once the architecture is designed. So: note in §22 that the
+**platform (services) will be confirmed after design**, raise a `❓ OPEN` for anything data/tool-related
+that's unclear, and let the `environment-readiness` skill request the concrete service set **after**
+`solution-architecture`.
 
 ## Output
 

@@ -28,18 +28,15 @@ multi-agent design unless the use case truly needs it) and explain the trade-off
 
 Walk them through, one step at a time — each phase has a skill that auto-loads when relevant:
 
-1. **Discover** what to build → `discovery` skill → writes `references/context.md`, fills this file
-2. **Check the environment is ready** → `environment-readiness` → the **platform team** provides
-   GitHub · Foundry · Azure; the builder just confirms (deeper Azure check: `infra-landing-zone`)
-3. **Design** the architecture → `solution-architecture` → diagrams in `src/docs/`
-4. **Build** the agent → `maf-app-authoring` + `skill-authoring` (+ `azure-integration` for KB/state)
-5. **Ship & test** → ask: run **local** (AG-UI on their machine) or **hosted in Azure**? →
-   `foundry-deploy` (manual `azd deploy` from the command line) → a live URL;
-   surface it to users with `channels` (Teams · M365 · web · voice)
+1. **Discover** what to build → `discovery` skill → writes `references/context.md`, fills this file (assess data/tools/KB readiness)
+2. **Design** the architecture → `solution-architecture` → diagrams in `src/docs/` **+ the required-services list**
+3. **Confirm the platform** (last gate before coding) → `environment-readiness` → request the **agentic-AI platform** with the services the design needs; the **platform team** provides them (deeper Azure check: `infra-landing-zone`). Foundry + a chat model + identity/RBAC + App Insights are always needed; Cosmos / AI Search / Key Vault connections only if the design calls for them.
+4. **Build** the agent → `maf-app-authoring` + `skill-authoring` (+ `azure-integration` for KB/state); test **locally** first (AG-UI / DevUI)
+5. **Ship & test** → `foundry-deploy` (manual `azd deploy`) → a live hosted agent. If conversational, the **AG-UI endpoint is the test/use surface**; if it needs a branded or non-chat experience, surface it with `channels` (custom web app · Teams · M365 · voice)
 6. **Evaluate & operate** → `evaluation-observability` (quality + tracing) · `governance` (safe go-live)
 
 Goal: from idea → a deployed agent they can test. The builder **doesn't build the platform** — they
-consume what the platform team provisioned. Just ask them what they want to build.
+**request** the services their design needs and consume what the platform team provisions. Just ask them what they want to build.
 
 ## What this project is
 
