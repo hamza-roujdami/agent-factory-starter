@@ -21,27 +21,32 @@ Then just talk to Copilot — no Azure or coding expertise needed:
 3. **Build**     — generates the MAF app in `src/` + skills
 4. **Ship**      — deploy to Foundry from the command line → a URL you can test
 
-## The journey (discover → operate)
+## The journey (idea → live agent)
 
 Each phase is driven by a cockpit skill that auto-loads when it's relevant — you just keep talking to Copilot.
 
 ```mermaid
-flowchart LR
-    idea([Idea]) --> D[Discover]
-    D --> C{Check env}
-    C --> DES[Design]
-    DES --> B[Build]
-    B --> S[Ship]
-    S --> live([Live agent])
-    live --> O[Operate]
-    S -. surface .-> CH[Channels]
+flowchart TD
+    idea([💡 I want to build...]):::start --> D
+    D[1 · Discover<br/><i>what to build</i>]:::step --> C
+    C{2 · Check env<br/><i>platform ready?</i>}:::gate --> DES
+    DES[3 · Design<br/><i>architecture</i>]:::step --> B
+    B[4 · Build<br/><i>MAF agent + skills</i>]:::step --> S
+    S[5 · Ship<br/><i>azd deploy</i>]:::step --> live
+    live([🚀 Live agent to test]):::done --> O
+    O[6 · Operate<br/><i>evaluate + govern</i>]:::step
 
+    S -. publish .-> CH[Channels<br/><i>Teams · web · voice</i>]:::side
+
+    classDef start fill:#fef7e0,stroke:#e0a800,color:#111;
+    classDef done fill:#e6f4ea,stroke:#34a853,color:#111;
     classDef gate fill:#e8eef9,stroke:#5b7fc7,color:#111;
-    class C gate;
+    classDef step fill:#f5f5f7,stroke:#999,color:#111;
+    classDef side fill:#fff,stroke:#bbb,color:#555,stroke-dasharray:4 3;
 ```
 
-> The **Check env** gate (shaded) is where the builder confirms the **platform team** has GitHub · Foundry ·
-> the Azure AI Landing Zone ready — the cockpit never provisions infrastructure.
+> **Check env** (step 2) is a gate: the builder confirms the **platform team** has GitHub · Foundry · the
+> Azure AI Landing Zone ready. The cockpit consumes that environment — it never provisions infrastructure.
 
 ## Two layers (this is the core idea)
 
